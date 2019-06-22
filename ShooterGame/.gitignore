@@ -72,3 +72,9 @@ Plugins/*/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
+Content/AnimStarterPack/
+Content/FPS_Weapon_Bundle/
+Content/SciFiWeapDark/
+Content/SciFiWeapLight/
+
