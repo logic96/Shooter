@@ -76,6 +76,9 @@ DerivedDataCache/*
 Content/AnimStarterPack/
 Content/FPS_Weapon_Bundle/
 Content/SciFiWeapDark/
+Content/FirstPersonBP/
 Content/SciFiWeapLight/
 Content/WeaponComponent/
 Content/Weapons/
+Content/FirstPerson/
+Content/Geometry/
