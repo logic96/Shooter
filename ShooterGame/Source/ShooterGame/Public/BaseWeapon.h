@@ -32,7 +32,7 @@ protected:
 	UParticleSystem* MuzzleFlash;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Projectile)
 	TSubclassOf<AActor>ProjectileClass;
-
+	//这里是因为C++中不能直接使用蓝图类
 public:	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "WeaponType")
 	EWeaponTypes GunType;

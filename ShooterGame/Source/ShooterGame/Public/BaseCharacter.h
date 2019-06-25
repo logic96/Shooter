@@ -34,7 +34,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "status")
 	bool IsSprinting = false;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "status")
-	bool IsFireing = false;
+	bool IsFiring = false;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "status")
 	bool IsPlayingAnims = false;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "status")
@@ -48,13 +48,15 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	inline	bool GetSprinting() { return IsSprinting; }
 	UFUNCTION(BlueprintCallable)
-	inline	bool GetFireing() { return IsFireing; }
+	inline	bool GetFireing() { return IsFiring; }
 	UFUNCTION(BluePrintCallable)
 	inline int GetHealth() { return Health; }
 	UFUNCTION(BluePrintCallable)
 	inline bool GetDeath() { return IsDead; }
 	UFUNCTION(BlueprintCallable)
 	EWeaponTypes GetCurrentWeaponType();
+	//UFUNCTION(BlueprintCallable)
+	//ABaseWeapon* GetCurrentWeapon();
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -62,6 +64,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual FVector GetPawnViewLocation()const;//获取相机中心
+
 public:
 	UPROPERTY(EditDefaultsOnly, Category = Player)
 	class ABaseWeapon* CurrentWeapon;
@@ -70,6 +73,19 @@ protected:
 		TSubclassOf<ABaseWeapon>StarterWeaponClass;
 	UPROPERTY(EditDefaultsOnly, Category = Player)
 		FName WeaponAttachSocketName;
-	void Fire();
-
+	void OnFire();
+	void StopFire();
+	//在代码中获取AimOffset
+	UFUNCTION(BlueprintCallable)
+	FRotator GetAimOffset()const;
+	//开镜相关
+	EWeaponTypes CurrentWeaponType;
+	bool bWantsToZoom;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = player)
+	float ZoomedFOV;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = player, meta = (ClampMin = 0.0, ClampMax = 100))
+	float ZoomInterSpeed;
+	float DefaultFOV;
+	void BeginZoom();
+	void EndZoom();
 };
