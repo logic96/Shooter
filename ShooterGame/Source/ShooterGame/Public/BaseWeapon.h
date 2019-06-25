@@ -12,6 +12,13 @@ enum class  EWeaponTypes :uint8 {
 	Weapon_ShotGun,
 	Weapon_Rifile,
 };
+UENUM(BlueprintType)
+enum class EFireMode :uint8 {
+	SingleShot,
+	Burst,
+	FullAuto,
+};
+
 UCLASS()
 class SHOOTERGAME_API ABaseWeapon : public AActor
 {
@@ -38,5 +45,35 @@ public:
 	EWeaponTypes GunType;
 	UFUNCTION(BlueprintCallable)
 	void Fire();
-
+	//射击相关的
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Trigger")
+	bool bIsTriggerPulled=false;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "FireMode")
+	EFireMode CurrentFireMode;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "FireMode")
+	bool bCanShot = true;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "FireMode")
+	bool bIsInFireTimeDelay = false;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "FireMode")
+	//定时器，用于设置发射子弹相关的内容
+	float FireTimeDelay;
+	FTimerHandle TimerHandle;
+	bool bUseTimeHandle = false;
+	//连发相关
+	bool bInBrustRound = false;//表明是否连发完成（如果进行的话）
+	float BrustCount = 0;
+	UFUNCTION(BlueprintCallable)
+		void BrustFire();
+	UFUNCTION(BlueprintCallable)
+		void PullTrigger();
+	UFUNCTION(BlueprintCallable)
+		void ReleaseTrigger();
+	UFUNCTION(BlueprintCallable)
+	bool CanShot();
+	UFUNCTION(BlueprintCallable)
+		void ShotInSingle();
+	UFUNCTION(BlueprintCallable)
+		void ShotInBrust();
+	UFUNCTION(BlueprintCallable)
+		void ShotInAuto();
 };

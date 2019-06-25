@@ -57,6 +57,7 @@ protected:
 	EWeaponTypes GetCurrentWeaponType();
 	//UFUNCTION(BlueprintCallable)
 	//ABaseWeapon* GetCurrentWeapon();
+	
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

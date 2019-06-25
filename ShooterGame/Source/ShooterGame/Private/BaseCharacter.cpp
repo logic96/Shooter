@@ -86,18 +86,26 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("Zoom", IE_Released, this, &ABaseCharacter::EndZoom);
 }
 
-void ABaseCharacter::OnFire()
+void ABaseCharacter::OnFire() 
 {
 	if (CurrentWeapon != nullptr)
 	{
+
 		IsFiring = true;
-		CurrentWeapon->Fire();
+	//	CurrentWeapon->Fire();
+		CurrentWeapon->PullTrigger();
 	}
 }
 
 void ABaseCharacter::StopFire()
 {
-	IsFiring = false;
+	if (CurrentWeapon != nullptr)
+	{
+
+		IsFiring = false;
+		//	CurrentWeapon->Fire();
+		CurrentWeapon->ReleaseTrigger();
+	}
 }
 
 FRotator ABaseCharacter::GetAimOffset() const

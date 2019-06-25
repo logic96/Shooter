@@ -4,6 +4,7 @@
 #include "public/BaseWeapon.h"
 #include "DrawDebugHelpers.h"
 #include "Particles/ParticleSystem.h"
+#include "TimerManager.h"
 // Sets default values
 ABaseWeapon::ABaseWeapon()
 {
@@ -21,7 +22,7 @@ void ABaseWeapon::BeginPlay()
 	
 }
 
-void ABaseWeapon::Fire()
+void ABaseWeapon::Fire() //spawn projectile
 {
 	AActor* MyOwner = GetOwner();
 	if (MyOwner) {
@@ -58,5 +59,80 @@ void ABaseWeapon::Fire()
 	}
 }
 
+void ABaseWeapon::BrustFire()
+{
+	Fire();
+	BrustCount++;
+	bInBrustRound = true;
+	if (BrustCount >= 3)
+	{
+		GetWorldTimerManager().ClearTimer(TimerHandle);
+		bInBrustRound = false;
+		BrustCount = 0;//还需要重置BrustCount
+	}
+}
+
+void ABaseWeapon::PullTrigger() {
 
 
+		switch (CurrentFireMode)
+		{
+		case EFireMode::SingleShot:
+			ShotInSingle();
+			break;
+		case EFireMode::FullAuto:
+			ShotInAuto();
+			break;
+		case EFireMode::Burst:
+			ShotInBrust();
+			break;
+		default:
+			break;
+		}
+
+
+}
+void ABaseWeapon::ReleaseTrigger() {
+	bIsInFireTimeDelay = false;
+	if (bUseTimeHandle)
+	{
+		GetWorldTimerManager().ClearTimer(TimerHandle);
+	}
+}
+
+bool ABaseWeapon::CanShot() {
+	if (bIsInFireTimeDelay||bInBrustRound) { bCanShot = false; }
+	else {
+		bCanShot = true;
+	}
+	return bCanShot;
+}
+void ABaseWeapon::ShotInSingle() {
+	if (CanShot())
+	{
+		Fire();
+		bIsInFireTimeDelay = true;
+	}
+}
+void ABaseWeapon::ShotInBrust() {
+	if (CanShot()) {
+
+		bIsInFireTimeDelay = true;
+		GetWorldTimerManager().SetTimer(TimerHandle, this, &ABaseWeapon::BrustFire, 0.075, true, 0.f);
+
+	}
+	else {
+		bInBrustRound = false;//会出现由于子弹不够三连发只发了两发的情况
+		BrustCount = 0;//还需要重置BrustCount
+	}
+
+}
+void ABaseWeapon::ShotInAuto() {
+	//0.075
+	if (CanShot()) {
+		GetWorldTimerManager().SetTimer(TimerHandle, this, &ABaseWeapon::Fire, 0.5, true, 0.f); //延迟时间0.f，第一次就会执行Fire
+		bUseTimeHandle = true;
+		bIsInFireTimeDelay = true;
+	}
+	
+}
