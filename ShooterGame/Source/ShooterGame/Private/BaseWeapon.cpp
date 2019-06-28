@@ -22,6 +22,11 @@ void ABaseWeapon::BeginPlay()
 	
 }
 
+void ABaseWeapon::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+}
+
 void ABaseWeapon::Fire() //spawn projectile
 {
 	AActor* MyOwner = GetOwner();
@@ -136,3 +141,26 @@ void ABaseWeapon::ShotInAuto() {
 	}
 	
 }
+
+//void ABaseWeapon::PickUp()
+//{
+//	//难道不应该Destory?
+////	Destroy();
+//	SetActorTickEnabled(false);
+//	SetActorHiddenInGame(true);
+//	SetActorEnableCollision(false);
+//}
+//
+//void ABaseWeapon::Drop(FTransform TargetLocation)
+//{
+//	//注释的方案针对扔枪，其实想想也不对，产生了新的物品，而且增加
+//	//FActorSpawnParameters SpawnParams;
+//	//SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+//	//GetWorld()->SpawnActor<ABaseWeapon>(ABaseWeapon::StaticClass(), TargetLocation, SpawnParams);
+////	Destroy();不需要再这里destory（物品栏中没法destorty）
+//	//做到了一一对应，物品的转移
+//	SetActorTickEnabled(true);
+//	SetActorHiddenInGame(false);
+//	SetActorEnableCollision(true);
+//	SetActorLocationAndRotation(TargetLocation.GetLocation(), TargetLocation.GetRotation());
+//}

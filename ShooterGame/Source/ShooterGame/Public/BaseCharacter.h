@@ -7,7 +7,7 @@
 #include "Public/BaseWeapon.h"
 #include "BaseCharacter.generated.h"
 
-
+class ABaseWeapon;
 UCLASS()
 class SHOOTERGAME_API ABaseCharacter : public ACharacter
 {
@@ -67,8 +67,23 @@ public:
 	virtual FVector GetPawnViewLocation()const;//获取相机中心
 
 public:
-	UPROPERTY(EditDefaultsOnly, Category = Player)
-	class ABaseWeapon* CurrentWeapon;
+	//WeaponInventory相关,需要再游戏中也能够访问与修改
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Player)
+		class UWeaponInventoryComponent* MyWeaponInventory;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = PickUp)
+		bool bCanPickUp = false;
+	UFUNCTION(BlueprintCallable)
+		void DropWeapon();
+	UFUNCTION(BlueprintCallable)
+		void EnablePickUp();
+	UFUNCTION(BlueprintCallable)
+		void DisablePickUp();
+	//ItemInventory相关，需要在游戏中也能访问与修改
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Player)
+	class UItemInventoryComponent* MyItemInventory;
+	UFUNCTION(BlueprintCallable)
+		void PickUpItem(class ABaseItem* ItemToPickUp);
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor)override;
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = Player)
 		TSubclassOf<ABaseWeapon>StarterWeaponClass;
@@ -89,4 +104,15 @@ protected:
 	float DefaultFOV;
 	void BeginZoom();
 	void EndZoom();
+	//切枪相关
+	UFUNCTION(BlueprintCallable)
+		void NextWeapon();
+	UFUNCTION(BlueprintCallable)
+		void PrevWeapon();
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Weapon)
+	 ABaseWeapon* InitialWeapon;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Weapon)
+	 ABaseWeapon* WeaponInUse;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Weapon)
+	int32 WeaponIndex = 0;
 };

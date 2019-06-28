@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Public/BaseItem.h"
 #include "BaseWeapon.generated.h"
 
 UENUM(BlueprintType)
 enum class  EWeaponTypes :uint8 {
-	NoWeapon,
 	Weapon_ShotGun,
 	Weapon_Rifile,
 };
@@ -20,14 +20,13 @@ enum class EFireMode :uint8 {
 };
 
 UCLASS()
-class SHOOTERGAME_API ABaseWeapon : public AActor
+class SHOOTERGAME_API ABaseWeapon : public ABaseItem
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
 	ABaseWeapon();
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -41,6 +40,8 @@ protected:
 	TSubclassOf<AActor>ProjectileClass;
 	//这里是因为C++中不能直接使用蓝图类
 public:	
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "WeaponType")
 	EWeaponTypes GunType;
 	UFUNCTION(BlueprintCallable)
@@ -76,4 +77,13 @@ public:
 		void ShotInBrust();
 	UFUNCTION(BlueprintCallable)
 		void ShotInAuto();
+	//PickUp相关
+	//UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = PickUp)
+	//	bool bCanbePickUp = false;
+	//居然不用写了
+	//UFUNCTION(BlueprintCallable)
+	//virtual	void PickUp() override;
+	//UFUNCTION(BlueprintCallable)
+	//virtual	void Drop(FTransform TargetLocation)override;
+	//Notify事件用蓝图
 };
