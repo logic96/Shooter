@@ -259,7 +259,7 @@ void ABaseCharacter::PickUpItem(ABaseItem* ItemToPickUp)
 void ABaseCharacter::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 
-	ABaseItem* Item = Cast<ABaseWeapon>(OtherActor);
+	ABaseItem* Item = Cast<ABaseItem>(OtherActor);
 	if (Item != nullptr)
 	{
 		PickUpItem(Item);
