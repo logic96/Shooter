@@ -21,7 +21,7 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
-	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category=Weapons)
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category=Weapons)
 	TArray<class ABaseWeapon*>WeaponList;
 	UFUNCTION(BlueprintCallable)
 		int32 AddToInventory(ABaseWeapon* WeaponToAdd);

@@ -68,7 +68,7 @@ public:
 
 public:
 	//WeaponInventory相关,需要再游戏中也能够访问与修改
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Player)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Player)
 		class UWeaponInventoryComponent* MyWeaponInventory;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = PickUp)
 		bool bCanPickUp = false;
@@ -79,7 +79,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void DisablePickUp();
 	//ItemInventory相关，需要在游戏中也能访问与修改
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Player)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Player)
 	class UItemInventoryComponent* MyItemInventory;
 	UFUNCTION(BlueprintCallable)
 		void PickUpItem(class ABaseItem* ItemToPickUp);

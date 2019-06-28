@@ -23,7 +23,7 @@ protected:
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Weapons)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Weapons)
 		TArray<class ABaseItem*>ItemList;
 	UFUNCTION(BlueprintCallable)
 		int32 AddToInventory(ABaseItem* ItemToAdd);

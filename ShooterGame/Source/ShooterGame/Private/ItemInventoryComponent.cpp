@@ -34,6 +34,15 @@ void UItemInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType
 
 int32 UItemInventoryComponent::AddToInventory(ABaseItem* ItemToAdd)
 {
+	
+	for (int i = 0; i < ItemList.Num(); i++)
+	{
+		if (ItemToAdd->ItemName == ItemList[i]->ItemName)
+		{
+			ItemList[i]->ItemNums += ItemToAdd->ItemNums;
+			return true;
+		}
+	}
 	return ItemList.Add(ItemToAdd);
 }
 

@@ -20,13 +20,13 @@ class SHOOTERGAME_API ABaseItem : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ABaseItem();
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = ItemInfo)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = ItemInfo)
 		EItemTypes ItemType;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = ItemInfo)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = ItemInfo)
 		FName ItemName;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = ItemInfo)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = ItemInfo)
 		int32 ItemNums=0;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = ItemInfo)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = ItemInfo)
 		float ItemBuff;
 	//子类的BeginPlay或者是用蓝图设置属性
 protected:
