@@ -10,7 +10,10 @@
 UENUM(BlueprintType)
 enum class  EWeaponTypes :uint8 {
 	Weapon_ShotGun,
-	Weapon_Rifile,
+	Weapon_Rifle,
+	Weapon_HandGun,
+	Weapon_Launcher,
+	Weapon_NoGun,
 };
 UENUM(BlueprintType)
 enum class EFireMode :uint8 {
@@ -56,8 +59,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "FireMode")
 	bool bIsInFireTimeDelay = false;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "FireMode")
-	//定时器，用于设置发射子弹相关的内容
 	float FireTimeDelay;
+	//定时器，用于设置发射子弹相关的内容
 	FTimerHandle TimerHandle;
 	bool bUseTimeHandle = false;
 	//连发相关
@@ -80,10 +83,17 @@ public:
 	//PickUp相关
 	//UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = PickUp)
 	//	bool bCanbePickUp = false;
-	//居然不用写了
-	//UFUNCTION(BlueprintCallable)
-	//virtual	void PickUp() override;
-	//UFUNCTION(BlueprintCallable)
-	//virtual	void Drop(FTransform TargetLocation)override;
-	//Notify事件用蓝图
+
+	//子弹计数相关
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Ammo)
+		FName AmmoName;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Ammo)
+		int32 BulletCapacity=30;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Ammo)
+		int32 BulletNums=0;//每次开火时检测子弹数量,数量<=0 无法开火
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Ammo)
+		bool bHasBullet = false;//每次开火时检测子弹数量,数量<=0 无法开火
+	bool CheckBullet();
+	void Reload();
+
 };

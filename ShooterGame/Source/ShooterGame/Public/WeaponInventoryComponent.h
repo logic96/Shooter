@@ -23,6 +23,8 @@ protected:
 public:	
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category=Weapons)
 	TArray<class ABaseWeapon*>WeaponList;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Weapons)
+	int32 Capacity=4;
 	UFUNCTION(BlueprintCallable)
 		int32 AddToInventory(ABaseWeapon* WeaponToAdd);
 	UFUNCTION(BlueprintCallable)

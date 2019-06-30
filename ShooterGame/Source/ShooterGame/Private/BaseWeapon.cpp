@@ -28,14 +28,14 @@ void ABaseWeapon::Tick(float DeltaTime)
 }
 
 void ABaseWeapon::Fire() //spawn projectile
-{
+{	
+
 	AActor* MyOwner = GetOwner();
 	if (MyOwner) {
 		FVector EyeLocation;
 		FRotator EyeRotation;
 		MyOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);//需要重写该方法，使得返回相机中心
 
-//		EyeLocation=<>MyOwner->GetPawnViewLocation
 		FVector MuzzleLocation = MeshComp->GetSocketLocation(MuzzleSocketName);//子弹的发射点
 		FVector TraceEnd = EyeLocation + (EyeRotation.Vector()) * 10000;
 		FCollisionQueryParams QueryParams;
@@ -61,20 +61,24 @@ void ABaseWeapon::Fire() //spawn projectile
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 		//在枪口发射子弹
 		GetWorld()->SpawnActor<AActor>(ProjectileClass, MuzzleLocation, ShotDirection, SpawnParams);
+		BulletNums--;//每次开火子弹数量减少
 	}
 }
 
 void ABaseWeapon::BrustFire()
-{
-	Fire();
-	BrustCount++;
-	bInBrustRound = true;
-	if (BrustCount >= 3)
-	{
-		GetWorldTimerManager().ClearTimer(TimerHandle);
-		bInBrustRound = false;
-		BrustCount = 0;//还需要重置BrustCount
+{  
+	if (CanShot()) {
+		Fire();
+		BrustCount++;
+		bInBrustRound = true;
+		if (BrustCount >= 3)
+		{
+			GetWorldTimerManager().ClearTimer(TimerHandle);
+			bInBrustRound = false;
+			BrustCount = 0;//还需要重置BrustCount
+		}
 	}
+	
 }
 
 void ABaseWeapon::PullTrigger() {
@@ -106,8 +110,11 @@ void ABaseWeapon::ReleaseTrigger() {
 }
 
 bool ABaseWeapon::CanShot() {
-	if (bIsInFireTimeDelay||bInBrustRound) { bCanShot = false; }
-	else {
+	//如果没子弹
+	if ((CheckBullet() == false)|| (bIsInFireTimeDelay == true)|| (bInBrustRound == true)) {
+		bCanShot = false;
+	}
+	else{
 		bCanShot = true;
 	}
 	return bCanShot;
@@ -142,25 +149,16 @@ void ABaseWeapon::ShotInAuto() {
 	
 }
 
-//void ABaseWeapon::PickUp()
-//{
-//	//难道不应该Destory?
-////	Destroy();
-//	SetActorTickEnabled(false);
-//	SetActorHiddenInGame(true);
-//	SetActorEnableCollision(false);
-//}
-//
-//void ABaseWeapon::Drop(FTransform TargetLocation)
-//{
-//	//注释的方案针对扔枪，其实想想也不对，产生了新的物品，而且增加
-//	//FActorSpawnParameters SpawnParams;
-//	//SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-//	//GetWorld()->SpawnActor<ABaseWeapon>(ABaseWeapon::StaticClass(), TargetLocation, SpawnParams);
-////	Destroy();不需要再这里destory（物品栏中没法destorty）
-//	//做到了一一对应，物品的转移
-//	SetActorTickEnabled(true);
-//	SetActorHiddenInGame(false);
-//	SetActorEnableCollision(true);
-//	SetActorLocationAndRotation(TargetLocation.GetLocation(), TargetLocation.GetRotation());
-//}
+bool ABaseWeapon::CheckBullet()
+{
+	if (BulletNums <= 0) { bHasBullet = false; }
+	else { bHasBullet = true; }
+	return bHasBullet;
+}
+
+void ABaseWeapon::Reload()
+{
+	//播放动画
+}
+
+
